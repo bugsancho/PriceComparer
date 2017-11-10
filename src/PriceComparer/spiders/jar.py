@@ -1,8 +1,10 @@
 import datetime
 import re
 import urllib.parse
+
 import scrapy
 from scrapy.exceptions import DropItem
+
 from ..product_offer import ProductOffer
 
 
@@ -33,18 +35,16 @@ class JarSpider(scrapy.Spider):
         price_decimal_part = first_product_selector.xpath(
             './/*[@class="price2"]/text()').extract_first()
 
-        if not(price_integer_part and price_decimal_part):
-            raise DropItem()
+        combined_price = None
+        if price_decimal_part and price_integer_part:
+            price_decimal_part = price_decimal_part.replace(' лв', '')
+            combined_price = price_integer_part + price_decimal_part
 
-        price_decimal_part = price_decimal_part.replace(' лв', '')
-        parsed_price = float(price_integer_part + price_decimal_part)
-        print(parsed_price)
         product_offer = ProductOffer(
             retailer="jar",
             url=product_url,
             name=product_name,
-            price=parsed_price,
-            product_code=product_code,
-            time=datetime.datetime.utcnow().isoformat())
+            price=combined_price,
+            product_code=product_code)
 
         yield product_offer

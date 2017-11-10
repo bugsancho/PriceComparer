@@ -3,8 +3,10 @@ import re
 import urllib.parse
 
 import scrapy
-from scrapy.selector import Selector
 from scrapy.exceptions import DropItem
+from scrapy.selector import Selector
+
+from ..product_offer import ProductOffer
 
 
 class EmagSpider(scrapy.Spider):
@@ -31,25 +33,23 @@ class EmagSpider(scrapy.Spider):
         yield scrapy.Request(EmagSpider.search_page_url_template % url_escaped_search_term, cookies=cookies, callback=self.get_product_page)
 
     def parse(self, response):
-        price = Selector(response).re(r'EM\.productFullPrice = ([0-9.]+);')
-        discounted_price = Selector(response).re(
+        price = Selector(response).re_first(
+            r'EM\.productFullPrice = ([0-9.]+);')
+        discounted_price = Selector(response).re_first(
             r'EM\.productDiscountedPrice = ([0-9.]+);')
         name_pattern = re.compile(
             r'EM\.product_title\s*=\s*\"(.+)\"\s*;', re.UNICODE)
-        name_regex_result = Selector(text=response.text).re(name_pattern)
-
-        if not(discounted_price or price):
-            raise DropItem()
+        name_regex_result = Selector(text=response.text).re_first(name_pattern)
 
         name = ''
         if name_regex_result:
-            name = name_regex_result[0].encode().decode('unicode_escape')
+            name = name_regex_result.encode().decode('unicode_escape')
 
-        yield {
-            'retailer': EmagSpider.name,
-            'url': response.url,
-            'time': datetime.datetime.utcnow().isoformat(),
-            'price': price,
-            'discounted_price': discounted_price,
-            'name': name
-        }
+        product_offer = ProductOffer(
+            retailer=EmagSpider.name,
+            url=response.url,
+            name=name,
+            price=price,
+            discounted_price=discounted_price)
+
+        yield product_offer
