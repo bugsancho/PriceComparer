@@ -15,9 +15,8 @@ SPIDER_MODULES = ['PriceComparer.spiders']
 NEWSPIDER_MODULE = 'PriceComparer.spiders'
 
 
-
-#Logging
-#LOG_LEVEL='INFO'
+# Logging
+# LOG_LEVEL='INFO'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'PriceComparer (+http://www.yourdomain.com)'
@@ -43,34 +42,36 @@ DOWNLOAD_DELAY = 0
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-#DEFAULT_REQUEST_HEADERS = {
+# DEFAULT_REQUEST_HEADERS = {
 #   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 #   'Accept-Language': 'en',
 #}
 
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
+# SPIDER_MIDDLEWARES = {
 #    'PriceComparer.middlewares.PricecomparerSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
+# DOWNLOADER_MIDDLEWARES = {
 #    'PriceComparer.middlewares.MyCustomDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
-#EXTENSIONS = {
+# EXTENSIONS = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'PriceComparer.pipelines.PricecomparerPipeline': 300,
-#}
+# Item order from lowest to highest!
+ITEM_PIPELINES = {
+    'PriceComparer.price_offer_validation_pipeline.PriceOfferValidationPipeline': 300,
+    'PriceComparer.price_offer_transform_pipeline.PriceOfferTransformPipeline': 350
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
