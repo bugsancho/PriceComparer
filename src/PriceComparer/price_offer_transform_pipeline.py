@@ -1,17 +1,20 @@
-from scrapy.exceptions import DropItem
 from datetime import datetime
+
+print('this is --------------------------------------')
 
 
 class PriceOfferTransformPipeline(object):
 
     def process_item(self, item, spider):
-        if item['discounted_price']:
-            item['discounted_price'] = float(item['discounted_price'])
 
         if item['price']:
             item['price'] = float(item['price'])
 
-        if not item['time']:
+        # Optional attributes
+        if 'discounted_price' in item and item['discounted_price']:
+            item['discounted_price'] = float(item['discounted_price'])
+
+        if not ('time' in item and item['time']):
             item['time'] = datetime.utcnow().isoformat()
 
         return item
