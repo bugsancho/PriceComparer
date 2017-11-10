@@ -18,7 +18,7 @@ class EmagSpider(scrapy.Spider):
 
     def get_product_page(self, response):
         # We follow the link of the first search result, relying on a match.
-        # TODO Implement name checking to verify that the item matches
+        # TODO Implement name checking to verify that the item matches the search criteria
         first_item = response.xpath(
             "//*[@id='products-holder']/div[@class='product-holder-grid'][1]//a/@href").extract_first()
         first_item_page = response.urljoin(first_item)
