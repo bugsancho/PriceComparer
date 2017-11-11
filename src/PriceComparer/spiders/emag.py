@@ -43,6 +43,7 @@ class EmagSpider(scrapy.Spider):
 
         name = ''
         if name_regex_result:
+            # The RegEx selector returns encoded Unicode characters, so we need to decode them
             name = name_regex_result.encode().decode('unicode_escape')
 
         product_offer = ProductOffer(
