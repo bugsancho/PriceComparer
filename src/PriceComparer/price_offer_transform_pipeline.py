@@ -1,7 +1,5 @@
 from datetime import datetime
 
-print('this is --------------------------------------')
-
 
 class PriceOfferTransformPipeline(object):
 

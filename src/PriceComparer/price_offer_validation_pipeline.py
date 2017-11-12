@@ -1,7 +1,5 @@
 from scrapy.exceptions import DropItem
 
-print('offer----------')
-
 
 class PriceOfferValidationPipeline(object):
 

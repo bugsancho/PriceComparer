@@ -1,9 +1,6 @@
-import datetime
-import re
 import urllib.parse
 
 import scrapy
-from scrapy.exceptions import DropItem
 
 from ..product_offer import ProductOffer
 
