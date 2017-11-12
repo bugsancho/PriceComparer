@@ -1,20 +1,13 @@
-import scrapy
-import urllib
 from ..product_offer import ProductOffer
+from .base_spider import BaseSpider
 
 
-class PcstoreSpider(scrapy.Spider):
+class PcstoreSpider(BaseSpider):
     name = 'pcstore'
     allowed_domains = ['pcstore.bg']
-    search_page_url_template = 'https://www.pcstore.bg/bg/catalogsearch/result/?q=%s'
 
-    def __init__(self, search_term=None, *args, **kwargs):
-        super(PcstoreSpider, self).__init__(*args, **kwargs)
-        self.search_term = search_term
-
-    def start_requests(self):
-        url_escaped_search_term = urllib.parse.quote(self.search_term)
-        yield scrapy.Request(PcstoreSpider.search_page_url_template % url_escaped_search_term)
+    def get_search_page_url_template(self):
+        return 'https://www.pcstore.bg/bg/catalogsearch/result/?q=%s'
 
     def parse(self, response):
         product_container = response.css('.products-grid .item.first')

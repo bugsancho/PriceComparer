@@ -1,22 +1,13 @@
-import urllib.parse
-
-import scrapy
-
 from ..product_offer import ProductOffer
+from .base_spider import BaseSpider
 
 
-class JarSpider(scrapy.Spider):
+class JarSpider(BaseSpider):
     name = 'jar'
     allowed_domains = ['www.jarcomputers.com']
-    search_page_url_template = 'https://www.jarcomputers.com/search?q=%s'
 
-    def __init__(self, search_term=None, *args, **kwargs):
-        super(JarSpider, self).__init__(*args, **kwargs)
-        self.search_term = search_term
-
-    def start_requests(self):
-        url_escaped_search_term = urllib.parse.quote(self.search_term)
-        yield scrapy.Request(JarSpider.search_page_url_template % url_escaped_search_term)
+    def get_search_page_url_template(self):
+        return 'https://www.jarcomputers.com/search?q=%s'
 
     def parse(self, response):
         first_product_selector = response.selector.xpath(
