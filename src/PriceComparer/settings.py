@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 # Scrapy settings for PriceComparer project
 #
 # For simplicity, this file contains only settings considered important or
@@ -8,16 +9,21 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
-
+import os
 BOT_NAME = 'PriceComparer'
 
 SPIDER_MODULES = ['PriceComparer.spiders']
 NEWSPIDER_MODULE = 'PriceComparer.spiders'
-
-
 # Logging
 # LOG_LEVEL='INFO'
-
+DATABASE = {
+    'drivername': 'postgres',
+    'host': os.environ.get('SCRAPY_DATABASE_HOST'),
+    'port': '5432',
+    'username': os.environ.get('SCRAPY_DATABASE_USERNAME'),
+    'password': os.environ.get('SCRAPY_DATABASE_PASSWORD'),
+    'database': 'postgres'
+}
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.89 Safari/537.36'
 #FEED_URI = 'file:///items.json'
@@ -70,7 +76,8 @@ DOWNLOAD_DELAY = 0
 # Item order from lowest to highest!
 ITEM_PIPELINES = {
     'PriceComparer.price_offer_validation_pipeline.PriceOfferValidationPipeline': 300,
-    'PriceComparer.price_offer_transform_pipeline.PriceOfferTransformPipeline': 350
+    'PriceComparer.price_offer_transform_pipeline.PriceOfferTransformPipeline': 350,
+    'PriceComparer.database_saver_pipeline.DatabaseSaverPipeline': 450
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
