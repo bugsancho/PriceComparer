@@ -34,6 +34,7 @@ class PcstoreSpider(BaseSpider):
             url=url,
             name=product_name,
             price=original_price or regular_price,
-            discounted_price=discounted_price or None)
+            discounted_price=discounted_price or None,
+            search_id=self.search_id)
 
         yield product_offer

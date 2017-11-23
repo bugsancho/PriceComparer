@@ -16,3 +16,4 @@ class ProductOffer(scrapy.Item):
     discounted_price = scrapy.Field()
     name = scrapy.Field()
     product_code = scrapy.Field()
+    search_id = scrapy.Field()

@@ -33,6 +33,7 @@ class JarSpider(BaseSpider):
             url=product_url,
             name=product_name,
             price=combined_price,
-            product_code=product_code)
+            product_code=product_code,
+            search_id=self.search_id)
 
         yield product_offer

@@ -32,6 +32,7 @@ class TechnomarketSpider(BaseSpider):
             url=absolute_url,
             name=product_name,
             product_code=product_code,
-            price=price)
+            price=price,
+            search_id=self.search_id)
 
         yield product_offer
