@@ -29,11 +29,14 @@ class PcstoreSpider(BaseSpider):
             '.price-box .regular-price .price').xpath('.//text()').extract()[:2]
         regular_price = ''.join(regular_price_parts)
 
+        product_id = product_container.css('.image .product-image img::attr(id)').re_first('product-collection-image-(.+)')
+        
         product_offer = ProductOffer(
             retailer="pcstore",
             url=url,
             name=product_name,
             price=original_price or regular_price,
+            product_code=product_id,
             discounted_price=discounted_price or None,
             search_id=self.search_id)
 
